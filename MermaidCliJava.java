@@ -12,24 +12,27 @@ public class MermaidCliJava {
         String outputFilePath = args[1];
 
         try {
+            // Lire le contenu du fichier source Mermaid
             String source = new String(Files.readAllBytes(Paths.get(inputFilePath)));
 
-            // 1. Parser le code Mermaid (en utilisant ANTLR ou autre)
-            // Diagram diagram = MermaidParser.parse(source);
-            // Ici, MermaidParser est une classe hypothétique que vous implémenterez.
+            // Utiliser le parser pour créer le diagramme
+            Diagram diagram = MermaidParser.parse(source);
 
-            // Pour l'exemple, créons un diagramme factice
-            Diagram diagram = new Diagram();
-            diagram.getLines().add(new SequenceLine("Alice", "Bob", "Hello"));
-            diagram.getLines().add(new SequenceLine("Bob", "Alice", "Hi"));
+            // Afficher quelques informations pour vérification
+            System.out.println("Diagramme analysé avec succès. Lignes trouvées :");
+            for (SequenceLine line : diagram.getLines()) {
+                System.out.println("  " + line);
+            }
 
-            // 2. Rendre le diagramme en image
+            // Rendre le diagramme en image (ici, un rendu simplifié)
             Renderer renderer = new Renderer();
             renderer.render(diagram, outputFilePath);
 
             System.out.println("Diagramme généré : " + outputFilePath);
         } catch (Exception e) {
+            System.err.println("Erreur lors de la génération du diagramme :");
             e.printStackTrace();
+            System.exit(1);
         }
     }
 }
