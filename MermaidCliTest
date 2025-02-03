@@ -1,0 +1,86 @@
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+
+public class MermaidCliTest {
+
+    /**
+     * Teste le parsing d'un diagramme de séquence valide.
+     */
+    @Test
+    public void testValidSequenceDiagramParsing() {
+        String source =
+                "@startsequence\n" +
+                "Alice -> Bob : Bonjour\n" +
+                "Bob -> Alice : Salut\n" +
+                "@endsequence";
+
+        try {
+            Diagram diagram = MermaidParser.parse(source);
+            // Vérifier que le diagramme contient exactement 2 lignes
+            assertEquals(2, diagram.getLines().size(), "Le diagramme doit contenir 2 interactions.");
+
+            // Vérifier les détails de la première ligne
+            SequenceLine firstLine = diagram.getLines().get(0);
+            assertEquals("Alice", firstLine.getParticipantFrom());
+            assertEquals("Bob", firstLine.getParticipantTo());
+            assertEquals("Bonjour", firstLine.getMessage());
+
+            // Vérifier les détails de la deuxième ligne
+            SequenceLine secondLine = diagram.getLines().get(1);
+            assertEquals("Bob", secondLine.getParticipantFrom());
+            assertEquals("Alice", secondLine.getParticipantTo());
+            assertEquals("Salut", secondLine.getMessage());
+
+        } catch (Exception e) {
+            fail("Le parsing a échoué avec l'exception : " + e.getMessage());
+        }
+    }
+
+    /**
+     * Teste la génération d'une image à partir du diagramme.
+     * Ce test crée une image, vérifie qu'elle a bien été créée puis la supprime.
+     */
+    @Test
+    public void testRenderingDiagram() {
+        String source =
+                "@startsequence\n" +
+                "Alice -> Bob : Bonjour\n" +
+                "Bob -> Alice : Salut\n" +
+                "@endsequence";
+        String outputFilePath = "test-diagram.png";
+
+        try {
+            // Parser le diagramme
+            Diagram diagram = MermaidParser.parse(source);
+
+            // Rendre le diagramme en image
+            Renderer renderer = new Renderer();
+            renderer.render(diagram, outputFilePath);
+
+            // Vérifier que le fichier image a bien été créé
+            File imageFile = new File(outputFilePath);
+            assertTrue(imageFile.exists(), "Le fichier image doit exister après le rendu.");
+
+            // Optionnel : Vérifier que le fichier est une image lisible
+            BufferedImage image = ImageIO.read(imageFile);
+            assertNotNull(image, "L'image générée ne doit pas être nulle.");
+
+            // Nettoyage : supprimer le fichier de test
+            assertTrue(imageFile.delete(), "Le fichier de test doit être supprimé.");
+
+        } catch (Exception e) {
+            fail("Le rendu a échoué avec l'exception : " + e.getMessage());
+        }
+    }
+
+    /**
+     * Teste le comportement du parser avec un diagramme invalide.
+     */
+    @Test
+    public void testInvalidDiagramParsing() {
+        String invalidSource = "Contenu invalide sans balises de début/fin";
+        Exception exception = assertThrows(Exception.class, () -> {
+     
