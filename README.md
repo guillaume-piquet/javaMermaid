@@ -2,7 +2,15 @@
 
 Ce projet est une implémentation en Java permettant de parser et de rendre des diagrammes Mermaid (simplifiés) en image.  
 Il s'agit ici d'un outil en ligne de commande capable de lire un fichier texte contenant un diagramme de séquence écrit dans une syntaxe simplifiée, de le transformer en un modèle Java, puis de générer une image PNG grâce à Java2D.
-pour  le moment ne gere  que  les diagrammes de sequences
+
+
+Pour  le moment ne gere  que  les diagrammes de sequences !!!
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->>Bob: Bonjour
+    Bob-->>Alice: Salut
+
 
 ## Fonctionnalités
 
