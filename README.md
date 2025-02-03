@@ -5,13 +5,15 @@ Il s'agit ici d'un outil en ligne de commande capable de lire un fichier texte c
 
 
 Pour  le moment ne gere  que  les diagrammes de sequences !!!
+
+
+```mermaid
 sequenceDiagram
     participant Alice
     participant Bob
     Alice->>Bob: Bonjour
     Bob-->>Alice: Salut
-
-
+```
 ## Fonctionnalités
 
 - **Parsing** : Analyse d'un diagramme de séquence Mermaid et construction d'un modèle interne (`Diagram` et `SequenceLine`).
