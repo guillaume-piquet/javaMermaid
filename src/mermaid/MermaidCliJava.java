@@ -1,3 +1,8 @@
+package src.mermaid;
+
+import src.mermaid.model.Diagram;
+import src.mermaid.model.SequenceLine;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
